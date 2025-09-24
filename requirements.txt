@@ -1,0 +1,36 @@
+# PyTorch with CUDA 12.4 support
+torch==2.6.0+cu124
+torchvision==0.21.0+cu124
+torchaudio==2.6.0+cu124
+
+# Core ML libraries
+transformers>=4.35.0
+pillow
+numpy
+pandas
+tqdm
+scikit-learn
+seaborn
+matplotlib
+
+# CLIP model
+git+https://github.com/openai/CLIP.git
+
+# BLIP-2 specific dependencies
+accelerate>=0.20.0
+sentencepiece
+protobuf
+
+# Computer Vision and Analysis
+opencv-python
+faiss-cpu
+
+# Web Interface
+gradio
+
+# Experiment tracking and logging
+wandb
+
+# Additional utilities
+requests
+urllib3
