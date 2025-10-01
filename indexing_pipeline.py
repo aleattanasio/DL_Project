@@ -337,7 +337,7 @@ class IndexingPipeline:
 
 if __name__ == "__main__":
     # Example usage
-    dataset_path = r"C:\Users\Utente\PycharmProjects\DL_Exam_v2\Anime -Naruto-.v1i.multiclass"
+    dataset_path = r"./Anime -Naruto-.v1i.multiclass"
 
     # Initialize and run pipeline
     pipeline = IndexingPipeline(dataset_path)
