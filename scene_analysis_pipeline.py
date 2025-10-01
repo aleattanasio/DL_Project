@@ -539,7 +539,7 @@ if __name__ == "__main__":
         pipeline = SceneAnalysisPipeline(vector_db, sam_model_type="vit_b")
 
         # Analyze a sample image (you can replace with your own image)
-        sample_image = r"C:\Users\Utente\PycharmProjects\DL_Exam_v2\Anime -Naruto-.v1i.multiclass\test\43596_jpg.rf.5b5721f1535fb8fb376f60ee2335807a.jpg"
+        sample_image = r"./Anime -Naruto-.v1i.multiclass/test/43596_jpg.rf.5b5721f1535fb8fb376f60ee2335807a.jpg"
 
         if os.path.exists(sample_image):
             results = pipeline.analyze_scene(sample_image)

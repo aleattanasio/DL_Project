@@ -874,7 +874,7 @@ if __name__ == "__main__":
     print()
 
     # Configuration
-    data_dir = r"C:\Users\Utente\PycharmProjects\DL_Exam_v2\Anime -Naruto-.v1i.multiclass"
+    data_dir = r"./Anime -Naruto-.v1i.multiclass"
     save_dir = "results_pretrained_baseline"
     model_name = "ViT-B/32"  # Same as used in fine-tuning
 

@@ -839,7 +839,7 @@ if __name__ == "__main__":
     }
 
     # Data directory
-    data_dir = r"C:\Users\Utente\PycharmProjects\DL_Exam_v2\Anime -Naruto-.v1i.multiclass"
+    data_dir = r"./Anime -Naruto-.v1i.multiclass"
     save_dir = "results_faiss_clip_finetuned"
 
     print(f"\n📋 CONFIGURATION:")
