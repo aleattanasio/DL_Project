@@ -185,9 +185,12 @@ class SearchLogic:
 
 class SceneAnalysisPipeline:
     # Main scene analysis pipeline orchestrating segmentation, processing, and search
-    def __init__(self, vector_database, sam_model_type="vit_h"):
+    def __init__(self, vector_database, sam_model_type="vit_h", clip_model=None, clip_preprocess=None, clip_model_name="ViT-B/32"):
         print("Initializing Scene Analysis Pipeline...")
-        self.embedding_model = EmbeddingModel()
+        if clip_model is not None:
+            self.embedding_model = EmbeddingModel(model_name=clip_model_name, model=clip_model, preprocess=clip_preprocess)
+        else:
+            self.embedding_model = EmbeddingModel(model_name=clip_model_name)
         self.segmentation_model = SegmentationModel(sam_model_type)
         self.segment_processor = SegmentProcessor(self.embedding_model)
         self.search_logic = SearchLogic(vector_database)
@@ -288,29 +291,19 @@ class SceneAnalysisPipeline:
             print(f"Error saving visualization: {e}")
 
 if __name__ == "__main__":
-    # Example usage
     try:
-        # Load pre-built vector database
         from indexing_pipeline import VectorDatabase
-
         vector_db = VectorDatabase()
         vector_db.load_from_file("naruto_character_embeddings.pkl")
-
-        # Initialize scene analysis pipeline
         pipeline = SceneAnalysisPipeline(vector_db, sam_model_type="vit_b")
-
-        # Analyze a sample image (you can replace with your own image)
         sample_image = r"./Anime -Naruto-.v1i.multiclass/test/43596_jpg.rf.5b5721f1535fb8fb376f60ee2335807a.jpg"
-
         if os.path.exists(sample_image):
             results = pipeline.analyze_scene(sample_image)
-
             print("\n=== Scene Analysis Results ===")
             print(f"Image: {results['image_path']}")
             print(f"Total segments found: {results['total_segments']}")
             print(f"Characters detected: {len(results['characters_found'])}")
             print(f"Unique characters: {results['unique_characters']}")
-
             for char_detection in results['characters_found']:
                 print(f"\n• Character: {char_detection['character']}")
                 print(f"  Confidence: {char_detection['confidence']:.3f}")
