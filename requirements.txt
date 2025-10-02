@@ -1,3 +1,4 @@
+torch
 # Core ML libraries
 transformers>=4.35.0
 pillow
