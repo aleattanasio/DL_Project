@@ -12,7 +12,7 @@ from indexing_pipeline import VectorDatabase
 # Evaluates the manual test set using Scene Analysis Pipeline.
 class ManualTestEvaluator:
 
-    def __init__(self, vector_db_path, sam_model_type="vit_b", confidence_threshold=0.0):
+    def __init__(self, vector_db_path, sam_model_type="vit_h", confidence_threshold=0.0):
         print("Initializing evaluator with Scene Analysis Pipeline...")
 
         vector_db = VectorDatabase()
@@ -96,7 +96,7 @@ def create_labels_template(csv_file, output_file):
 
 
 def evaluate_test_set(csv_file, labels_file, vector_db_path, results_file,
-                      sam_model_type="vit_b", save_visualizations=False):
+                      sam_model_type="vit_h", save_visualizations=False):
     df = pd.read_csv(csv_file)
     manual_labels = load_manual_labels(labels_file)
 
@@ -244,7 +244,7 @@ if __name__ == "__main__":
             labels_file=LABELS_FILE,
             vector_db_path=VECTOR_DB_PATH,
             results_file=RESULTS_FILE,
-            sam_model_type="vit_b",
+            sam_model_type="vit_h",
             save_visualizations=False
         )
     except Exception as e:
