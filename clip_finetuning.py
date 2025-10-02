@@ -590,12 +590,4 @@ if __name__ == "__main__":
     for class_name, metrics in evaluation_results['per_class_metrics'].items():
         accuracy_percent = metrics['accuracy'] * 100
         print(f"   {class_name:>8}: {accuracy_percent:>6.2f}% ({metrics['correct']}/{metrics['total']})")
-    print(f"\nKEY DIFFERENCES FROM PREVIOUS VERSION:")
-    print(f"   ✅ Uses prototype-based contrastive learning")
-    print(f"   ✅ Only fine-tunes last 2 layers of visual encoder")
-    print(f"   ✅ Much more conservative learning rate (1e-6)")
-    print(f"   ✅ Proper float32 handling throughout")
-    print(f"   ✅ Label smoothing for better generalization")
-    print(f"   ✅ Dynamic prototype updates during training")
-    print(f"\nFIXED SIMPLE FINE-TUNING COMPLETE!")
-    print(f"This version should achieve much better results than the previous broken approach!")
+
