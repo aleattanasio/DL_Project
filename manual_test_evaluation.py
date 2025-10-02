@@ -185,23 +185,37 @@ def evaluate_test_set(csv_file,
         if filename not in manual_labels:
             print(f"Warning: {filename}: manual label missing, skipping")
             continue
-        ground_truth = manual_labels[filename]
+
+        # Handle both single character and multi-character labels
+        ground_truth_list = manual_labels[filename]
+        if isinstance(ground_truth_list, str):
+            ground_truth_list = [ground_truth_list]
+        elif not isinstance(ground_truth_list, list):
+            print(f"Warning: {filename}: invalid label format, skipping")
+            continue
+
         print(f"\nProcessing {filename}...")
         prediction = evaluator.get_top1_prediction(image_path)
         if prediction is None:
             print(f"Warning: {filename}: prediction error, skipping")
             continue
         all_predictions = evaluator.get_all_predictions(image_path)
-        is_correct = (prediction == ground_truth)
+
+        # Check if prediction matches any of the ground truth characters
+        is_correct = (prediction in ground_truth_list)
         if is_correct:
             correct += 1
         total += 1
-        class_stats[ground_truth]['total'] += 1
-        if is_correct:
-            class_stats[ground_truth]['correct'] += 1
+
+        # Update class stats for each ground truth character
+        for gt_char in ground_truth_list:
+            class_stats[gt_char]['total'] += 1
+            if prediction == gt_char:
+                class_stats[gt_char]['correct'] += 1
+
         result = {
             'filename': filename,
-            'ground_truth': ground_truth,
+            'ground_truth': ground_truth_list,  # Keep as list for multi-character scenes
             'top1_prediction': prediction,
             'correct': is_correct,
             'all_predictions': [
@@ -211,7 +225,8 @@ def evaluate_test_set(csv_file,
         }
         results.append(result)
         status = "✅" if is_correct else "❌"
-        print(f"{status} {filename:20s} | GT: {ground_truth:15s} | PRED: {prediction:15s}")
+        gt_display = ', '.join(ground_truth_list)
+        print(f"{status} {filename:20s} | GT: {gt_display:15s} | PRED: {prediction:15s}")
         if all_predictions:
             top_preds = ', '.join([f"{cls}({conf:.3f})" for cls, conf in all_predictions[:3]])
             print(f"    Top-3: {top_preds}")

@@ -645,8 +645,6 @@ class PretrainedCLIPEvaluator:
 if __name__ == "__main__":
     print("PRE-TRAINED CLIP BASELINE EVALUATION")
     print("=" * 70)
-    print("This script evaluates the zero-shot performance of pre-trained CLIP")
-    print("to establish a baseline before fine-tuning.")
     print()
     data_dir = r"./Anime -Naruto-.v1i.multiclass"
     save_dir = "results_pretrained_baseline"
@@ -660,7 +658,6 @@ if __name__ == "__main__":
     evaluation_mode = "full"
     if evaluation_mode == "full":
         print("RUNNING FULL DATASET EVALUATION (Train + Valid + Test)")
-        print("This provides the most comprehensive zero-shot baseline")
         results = evaluator.evaluate_zero_shot_full_dataset(data_dir, save_dir)
         print("\n" + "="*70)
         print("FULL DATASET ZERO-SHOT EVALUATION COMPLETE")
@@ -681,7 +678,6 @@ if __name__ == "__main__":
         print(f"   Summary Report: {save_dir}/reports/zero_shot_full_dataset_summary.md")
     else:
         print("RUNNING TEST SET EVALUATION (Test Only)")
-        print("This provides a direct comparison with your fine-tuned model")
         results = evaluator.evaluate_zero_shot(data_dir, save_dir)
         print("\n" + "="*70)
         print("TEST SET ZERO-SHOT EVALUATION COMPLETE")
@@ -700,16 +696,5 @@ if __name__ == "__main__":
     for class_name, metrics in results['per_class_metrics'].items():
         accuracy_percent = metrics['accuracy'] * 100
         print(f"   {class_name:>8}: {accuracy_percent:>6.2f}% ({metrics['correct']}/{metrics['total']})")
-    print(f"\nCOMPARISON WITH FINE-TUNED MODEL:")
-    fine_tuned_accuracy = 1.0
-    zero_shot_accuracy = results['overall_metrics']['zero_shot_accuracy']
-    improvement = fine_tuned_accuracy - zero_shot_accuracy
-    improvement_percent = improvement * 100
-    print(f"   Fine-tuned Model Accuracy: {fine_tuned_accuracy:.4f} (100.00%)")
-    print(f"   Zero-shot CLIP Accuracy:   {zero_shot_accuracy:.4f} ({zero_shot_accuracy*100:.2f}%)")
-    print(f"   Improvement from Fine-tuning: +{improvement:.4f} (+{improvement_percent:.2f} percentage points)")
-    if improvement > 0:
-        relative_improvement = (improvement / zero_shot_accuracy) * 100
-        print(f"   Relative Improvement: +{relative_improvement:.1f}% better than zero-shot")
+
     print(f"\nBASELINE EVALUATION COMPLETE!")
-    print(f"You now have a comprehensive zero-shot baseline to compare with your fine-tuned model.")
