@@ -297,7 +297,7 @@ if __name__ == "__main__":
         vector_db.load_from_file("naruto_character_embeddings.pkl")
 
         # Initialize scene analysis pipeline
-        pipeline = SceneAnalysisPipeline(vector_db, sam_model_type="vit_b")
+        pipeline = SceneAnalysisPipeline(vector_db, sam_model_type="vit_h")
 
         # Analyze a sample image (you can replace with your own image)
         sample_image = r"./Anime -Naruto-.v1i.multiclass/test/43596_jpg.rf.5b5721f1535fb8fb376f60ee2335807a.jpg"
@@ -319,4 +319,5 @@ if __name__ == "__main__":
             print(f"Sample image not found: {sample_image}")
 
     except Exception as e:
+
         print(f"Error in demo: {e}")
