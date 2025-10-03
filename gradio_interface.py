@@ -86,7 +86,6 @@ class NarutoCharacterUI:
                     print(f"Warning: Could not load FAISS database: {e}")
                     print("Falling back to traditional database...")
 
-            # Handle BLIP-2 databases specifically
             if "BLIP-2" in self.current_model_name and os.path.exists(self.database_path):
                 try:
                     import pickle
@@ -101,7 +100,6 @@ class NarutoCharacterUI:
                     print(f"Warning: Could not load BLIP-2 database: {e}")
                     print("Falling back to traditional database...")
 
-            # Handle other fine-tuned databases
             if "Fine-tuned DB" in self.current_model_name and os.path.exists(self.database_path):
                 try:
                     import pickle
@@ -1059,3 +1057,4 @@ if __name__ == "__main__":
         print("   3. Try setting environment variable: set GRADIO_SERVER_PORT=8080")
         print("   4. Check if any antivirus software is blocking the ports")
         print("   5. Try running as administrator if needed")
+
