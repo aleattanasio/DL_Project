@@ -16,7 +16,6 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 import seaborn as sns
 import logging
 from datetime import datetime
-import argparse
 from tqdm import tqdm
 import warnings
 warnings.filterwarnings('ignore')
@@ -272,7 +271,7 @@ class BLIP2FineTuner:
               batch_size=16,
               learning_rate=1e-4,
               weight_decay=1e-4,
-              patience=3):
+              patience=5):
         logger.info("Starting BLIP-2 fine-tuning...")
         self.prepare_datasets()
         train_loader = DataLoader(self.datasets['train'], batch_size=batch_size, shuffle=True, num_workers=2, pin_memory=True)
@@ -507,48 +506,47 @@ class BLIP2FineTuner:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='BLIP-2 Fine-tuning for Naruto Character Recognition')
-    parser.add_argument('--data_dir', type=str, default='Anime -Naruto-.v1i.multiclass',
-                        help='Directory containing the dataset')
-    parser.add_argument('--output_dir', type=str, default='results_blip2_finetuned',
-                        help='Directory to save results')
-    parser.add_argument('--model_name', type=str, default='Salesforce/blip2-opt-2.7b',
-                        help='BLIP-2 model variant to use')
-    parser.add_argument('--epochs', type=int, default=20,
-                        help='Number of training epochs')
-    parser.add_argument('--batch_size', type=int, default=8,
-                        help='Batch size for training')
-    parser.add_argument('--learning_rate', type=float, default=1e-4,
-                        help='Learning rate for optimizer')
-    parser.add_argument('--weight_decay', type=float, default=1e-4,
-                        help='Weight decay for regularization')
-    parser.add_argument('--evaluate_only', action='store_true',
-                        help='Only run evaluation (skip training)')
-    args = parser.parse_args()
+    data_dir = 'Anime -Naruto-.v1i.multiclass'
+    output_dir = 'results_blip2_finetuned'
+    model_name = 'Salesforce/blip2-opt-2.7b'
+    epochs = 20
+    batch_size = 8
+    learning_rate = 1e-4
+    weight_decay = 1e-4
+    evaluate_only = False  # Set to True to skip training
+
+    logger.info("BLIP-2 Fine-tuning for Naruto Character Recognition")
+    logger.info("=" * 60)
+
     fine_tuner = BLIP2FineTuner(
-        model_name=args.model_name,
-        data_dir=args.data_dir,
-        output_dir=args.output_dir
+        model_name=model_name,
+        data_dir=data_dir,
+        output_dir=output_dir
     )
+
     try:
-        if not args.evaluate_only:
+        if not evaluate_only:
             logger.info("Starting BLIP-2 fine-tuning pipeline...")
             best_val_acc = fine_tuner.train(
-                num_epochs=args.epochs,
-                batch_size=args.batch_size,
-                learning_rate=args.learning_rate,
-                weight_decay=args.weight_decay
+                num_epochs=epochs,
+                batch_size=batch_size,
+                learning_rate=learning_rate,
+                weight_decay=weight_decay
             )
             logger.info(f"Training completed with best validation accuracy: {best_val_acc:.2f}%")
         else:
             fine_tuner.prepare_datasets()
             fine_tuner.create_model()
+
         logger.info("Evaluating trained model...")
         test_results = fine_tuner.evaluate('test')
+
         logger.info("Creating embeddings database...")
         database = fine_tuner.create_embeddings_database()
+
         logger.info("BLIP-2 fine-tuning pipeline completed successfully!")
         logger.info(f"Final test accuracy: {test_results['accuracy']:.4f}")
+
     except Exception as e:
         logger.error(f"Error in fine-tuning pipeline: {e}")
         raise
