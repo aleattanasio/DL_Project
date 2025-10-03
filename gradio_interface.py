@@ -721,6 +721,11 @@ def create_gradio_interface():
         transform: translateY(-2px) !important;
         box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4) !important;
     }
+    /* remove Gradio footer */
+    footer, #footer, .footer, a[href*="gradio.app"], a[href*="huggingface.co/spaces/gradio"] {
+        display: none !important;
+        visibility: hidden !important;
+    }
     """
 
     with gr.Blocks(css=css, title="Naruto Character Recognition System") as interface:
@@ -979,8 +984,6 @@ def create_gradio_interface():
                 - **Similarity Search**: Cosine similarity with normalized embeddings
                 
                 ---
-                
-                **Built for the Naruto community with ❤️**
                 
                 *Choose your preferred AI model from the dropdown menus in Database Query and Scene Analysis tabs*
                 """)
