@@ -186,7 +186,6 @@ def evaluate_test_set(csv_file,
             print(f"Warning: {filename}: manual label missing, skipping")
             continue
 
-        # Handle both single character and multi-character labels
         ground_truth_list = manual_labels[filename]
         if isinstance(ground_truth_list, str):
             ground_truth_list = [ground_truth_list]
@@ -201,13 +200,11 @@ def evaluate_test_set(csv_file,
             continue
         all_predictions = evaluator.get_all_predictions(image_path)
 
-        # Check if prediction matches any of the ground truth characters
         is_correct = (prediction in ground_truth_list)
         if is_correct:
             correct += 1
         total += 1
 
-        # Update class stats for each ground truth character
         for gt_char in ground_truth_list:
             class_stats[gt_char]['total'] += 1
             if prediction == gt_char:
@@ -215,7 +212,7 @@ def evaluate_test_set(csv_file,
 
         result = {
             'filename': filename,
-            'ground_truth': ground_truth_list,  # Keep as list for multi-character scenes
+            'ground_truth': ground_truth_list,
             'top1_prediction': prediction,
             'correct': is_correct,
             'all_predictions': [
